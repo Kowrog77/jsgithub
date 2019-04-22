@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue Joes Fat</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+    <div id="vueApp">
+        <p v-if ="cartItem >0">Items in Cart: {{cartItem}}</p>
+       
+        <p v-if ="itemSelected != ''">Item selected: {{itemSelected}}</p>
+        <div v-for ="item in items">
+            <p>{{item.name}}</p>
+            <img v-bind:src = "item.imgsrc" v-on:click ="changeSelected(item.name)" style ="width: 100px; height: 100px;">
+            <p v-if = "item.ordered >0">Item: {{item.name}} Qty:{{item.ordered}}</p>
+            <button v-on:click = "orderthis(item)"> Order {{item.name}}</button>
+            <button v-if ="item.ordered >0" v-on:click ="deletethis(item)"> Delete {{item.name}}</button>
+        </div>
+    
+    </div>
+    <script>
+    var app = new Vue({
+        el:"#vueApp",
+        data:{
+            cartItem:0,
+            itemSelected: "",
+            items :[
+                {name:"Bill",ordered:"0",imgsrc:"image 1.jpg"},
+                {name:"Monica", ordered:"0", imgsrc:"image2.jpg"},
+            ]
+        },
+        methods:{
+            changeSelected: function(aname){
+                this.itemSelected = aname;
+
+            },
+            orderthis(anItem){
+                anItem.ordered ++;
+                this.cartItem ++;
+            },
+            deletethis(anItem){
+                anItem.ordered --;
+                this.cartItem--;
+
+            }
+        }
+    })
+    </script>
+</body>
+</html>
