@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div id="container">
+        <butt name="Nemo" age=1></butt>
+        <butt name="Dory" age=2></butt>
+        <div id="app">
+            <div class="row">
+                <div class="col-sm-6"> <cards image="first.jpg" name="Kristen"
+                    info="We the People of the United States, in Order to form a more perfect Union, establish Justice, insure domestic Tranquility, provide for the common defence, promote the general Welfare, and secure the Blessings of Liberty to ourselves and our Posterity, do ordain and establish this Constitution for the United States of ...">
+                    </cards>
+                </div>
+                <div class="col-sm-6"> <cards image="Second.jpg" name="Kristen 2.0"
+                    info="Manifesto of the Communist Party. A spectre is haunting Europe — the spectre of communism. All the powers of old Europe have entered into a holy alliance to exorcise this spectre: Pope and Tsar, Metternich and Guizot, French Radicals and German police-spies.">
+                    </cards>
+                </div>
+                <div class="col-sm-6"> 
+                    <cards image="thrid.jpg" name="Tiffany"
+                        info="O Canada!
+                        Our home and native land!
+                        True patriot love in all of us command.
+                        With glowing hearts we see thee rise,
+                        The True North strong and free!
+                        From far and wide,
+                        O Canada, we stand on guard for thee.
+                        God keep our land glorious and free!
+                        O Canada, we stand on guard for thee.
+                        O Canada, we stand on guard for thee">
+                        </cards>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        Vue.component('cards', {
+            props: ['image', 'name', 'info'],
+            template: `
+             <div class="card" >
+                <img v-bind:src="image" style ="width:50%; height:50%;" class="card-img-top" alt="image">
+                <div class="card-body">
+                <h5 class="card-title">{{name}}</h5>
+                <p class="card-text">{{info}}</p>
+                
+            </div>
+            </div>`
+        })
+        Vue.component('butt', {
+            props: ['name', 'age'],
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+
+            template: `<button @click ="count++"> {{name}}{{count}}</button>`
+        })
+        var app = new Vue({
+            el: "#app",
+            data: {
+                message: "Vued again"
+            },
+        })
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

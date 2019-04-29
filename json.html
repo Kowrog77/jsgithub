@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="title"></div>
+    <div id="genre"></div>
+    <script>
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open("get","https://api.themoviedb.org/3/movie/550?api_key=e6d23d3c5882efc3dc5a4114859f6946")
+        httpRequest.send();
+        httpRequest.onreadystatechange = aFunction;
+        function aFunction(){
+            if(httpRequest.readyState == 4 && httpRequest.status == 200){
+                
+                var jsObject = JSON.parse(httpRequest.responseText);
+                console.log(jsObject);
+                document.getElementById('title').innerHTML = jsObject.original_title;
+                document.getElementById('genre').innerHTML = jsObject.genres[0].name;
+            }
+        }
+    </script>
+</body>
+</html>
