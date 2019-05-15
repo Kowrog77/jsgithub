@@ -6,14 +6,243 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Movie Site</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-    <div id ="vueApp">
-        
-        {{movies}}
-    </div>
-    <div id="title"></div>
     
-    <script src ="script.js"></script>
+    <div class="container mx-auto">
+        <div id ="vueApp">
+            <div class="card-deck" >  
+                <div v-for="i in 3" >
+                    <div class="card text-justify" style ="width:18rem; height:50%">
+                        <img v-bind:src="getimage(i)" class="card-img-top mx-auto rounded" alt="..." > 
+                        <div class="card-body">
+                                <div class="btn-group-lg" role="group" aria-label="Basic example">
+                                        <button v-on:click="child(moviesObject.results[i-1].title)" type="button" class="btn btn-secondary">Child</button>
+                                        <button v-on:click="Adult(moviesObject.results[i-1].title)"type="button" class="btn btn-secondary">Adult</button>
+                                </div>
+                            <h5 class="card-title" >{{moviesObject.results[i-1].title}}</h5>
+                            <p class="card-text">{{moviesObject.results[i-1].overview}}.</p>
+                        </div>
+                  </div>
+                </div>
+            </div>
+            <!-- {{moviesBought}} -->
+           <div  v-if ="moviesBought.length >0">
+              <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Movie</th>
+                      <th scope="col">Adult Ticket</th>
+                      <th scope="col">ChildTicket</th>
+                      <th scope="col">Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody v-for="movies of moviesBought">
+                    <tr v-if ="movies[1]>0 || movies[2] >0">
+                      <th scope="row">{{movies[0]}}</th>
+                      <td>
+                        {{movies[2]}}
+                        <button v-on:click="removeOne(movies[0],'adult')" type="button" class="btn btn-secondary btn-sm rounded-circle">
+                          -
+                        </button>
+                      </td>
+                      <td>
+                        {{movies[1]}}
+                        <button v-on:click="removeOne(movies[0],'child')" type="button" class="btn btn-secondary btn-sm rounded-circle">
+                            -
+                          </button>
+                      </td>
+                      <td>
+                        ${{(movies[1]*childTicket)+(movies[2]*adultTicket)}}
+                      </td>
+                      <td>
+                        <button v-on:click="remove(movies[0])" type="button" class="btn btn-secondary">
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+           </div>
+              
+        </div>
+    </div>
+  
+    
+    
+    
+    <script>
+    var app = new Vue({
+    el: "#vueApp",
+
+    data: {
+        moviesObject: {},
+        seen:false,
+        spot:0,
+        moviesBought:[],
+        ary:["",0,0],
+        childTicket: 5.99,
+        adultTicket:7.99,
+        
+        
+        
+
+
+    },
+    methods: {
+        arequest: function () {
+            if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+
+                this.moviesObject = JSON.parse(httpRequest.responseText);
+
+            }
+
+        },
+        getimage: function(i){
+            return "https://image.tmdb.org/t/p/w500/"+this.moviesObject.results[i-1].poster_path
+        },
+        child: function(movieTitle){
+            movieTrue = true;
+            console.log("fat")
+            
+            this.ary[0]= movieTitle;
+            this.ary[1]= 1
+
+            console.log("ary "+ this.ary);
+            console.log("moviesbought "+this.moviesBought)
+            if(this.moviesBought.length != []){
+                for(var x = 0;x <this.moviesBought.length;x++){
+                    // console.log(this.moviesBought[0][0]);
+                    console.log("x"+x)
+                   if(this.moviesBought[x][0] == movieTitle) {
+                        theSpot =this.moviesBought[x][1] +1
+                        console.log("walker")
+                        console.log(this.moviesBought[x][1]);
+                        
+                       
+                        console.log("thespot"+theSpot);
+                        // this.moviesBought[x][1] = theSpot
+                        Vue.set(this.moviesBought[x],[1],theSpot)
+                        
+                        
+                        movieTrue = false 
+                    }
+                    
+                }
+                // if(movieTrue ==true) {
+                    
+                //     Vue.set(this.moviesBought,spot,ary)
+                // }
+                if(movieTrue ==true) {
+                console.log("gayfat2")
+               
+                    this.moviesBought.push([movieTitle,1,0]);
+
+                
+            }
+             
+             
+          } else if(movieTrue ==true) {
+                console.log("gayfat")
+               
+                this.moviesBought.push([movieTitle,1,0]);
+                    
+               
+            }
+            console.log("moviesbought "+this.moviesBought)
+            
+        },
+        Adult:function(movieTitle){
+            movieTrue = true;
+            console.log("fat")
+            
+           
+            console.log("ary "+ this.ary);
+            console.log("moviesbought "+this.moviesBought)
+            if(this.moviesBought.length != []){
+                for(var z = 0;z <this.moviesBought.length;z++){
+                    // console.log(this.moviesBought[0][0]);
+                    console.log("z"+z)
+                   if(this.moviesBought[z][0] == movieTitle) {
+                        console.log("walker")
+                        theSpot =(this.moviesBought[z][2] )+1
+                        
+                        console.log("thespot"+theSpot)
+                        //  this.moviesBought[z][2] = theSpot
+                        Vue.set(this.moviesBought[z],[2],theSpot)
+        
+                        movieTrue = false 
+                    }
+                    
+                }
+                // if(movieTrue ==true) {
+                    
+                //     Vue.set(this.moviesBought,spot,ary)
+                // }
+                if(movieTrue ==true) {
+                console.log("gayfat2")
+               
+                    this.moviesBought.push([movieTitle,0,1]);
+
+                
+            }
+             
+             
+          }else if(movieTrue ==true) {
+                console.log("gayfat")
+               
+                    this.moviesBought.push([movieTitle,0,1]);
+                   
+               
+            }
+            console.log("moviesbought "+this.moviesBought)
+            
+        },
+        removeOne: function(movie,name){
+          if(name=="adult"){
+            for(var j = 0;j<this.moviesBought.length;j++){
+              if(movie == this.moviesBought[j][0]&& this.moviesBought[j][2]!=0){
+                remove = this.moviesBought[j][2]-1;
+                Vue.set(this.moviesBought[j],[2],remove)
+              }
+
+          }
+
+        }
+        else if(name=="child"){
+            for(var k = 0;k<this.moviesBought.length;k++){
+              if(movie == this.moviesBought[k][0]&& this.moviesBought[k][1]!=0){
+                remove = this.moviesBought[k][1]-1;
+                Vue.set(this.moviesBought[k],[1],remove)
+              }
+
+          }
+
+        }
+       
+
+    },
+    remove: function(movie){
+      for(var l = 0;l<this.moviesBought.length;l++){
+        if(movie == this.moviesBought[l][0]){
+          Vue.set(this.moviesBought,[l],[])
+        }
+
+      }
+    }
+
+  }
+})
+
+var httpRequest = new XMLHttpRequest();
+
+httpRequest.open("get", "https://api.themoviedb.org/3/movie/now_playing?api_key=e6d23d3c5882efc3dc5a4114859f6946")
+httpRequest.send();
+httpRequest.onreadystatechange = app.arequest;</script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
